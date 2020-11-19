@@ -39,13 +39,13 @@ namespace ConsoleApp1
 
         private void GenerateData()
         {
-            E_min = 20;
-            E_max = 2000;
-            R = 18;
+            E_min = 20.0;
+            E_max = 2000.0;
+            R = 18.0;
             ni = 0.3;
-            Beta = 5;
-            Gamma = 20;
-            Q = 50000;
+            Beta = 5.0;
+            Gamma = 20.0;
+            Q = 50000.0;
             for (int i = 0; i < V_size + 1; i++)
             {
                 var randomGenerator = new Random();
@@ -89,6 +89,9 @@ namespace ConsoleApp1
                 };
                 Coordinates.Add(i, coordinates);
             }
+            //Coordinates[7] = new Coordinates() { X = 100, Y = 100 };
+            //Coordinates[15] = new Coordinates() { X = 100, Y = 100 };
+            //Coordinates[6] = new Coordinates() { X = 100, Y = 100 };
             //Coordinates.Add(vq, new Coordinates
             //{
             //    X = 50.0,
