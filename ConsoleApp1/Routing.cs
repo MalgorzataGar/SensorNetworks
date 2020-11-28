@@ -8,15 +8,15 @@ namespace ConsoleApp1
     public class Routing
     {
         public const int V_size = 35;
-        public List<int> W = new List<int>();
+        public int vq = 35;
+        public int vs = 0;
         public List<int> V = new List<int>();
         public List<Node> E = new List<Node>();
+        public Dictionary<int, Coordinates> Coordinates = new Dictionary<int, Coordinates>();
+
+        public List<int> W = new List<int>();
         public double[] L = new double[V_size+1];
         public double[] M = new double[V_size+1];                     //payment offer from destination
-        public double[] p = new double[V_size+1];
-        public int vs = 0;
-        public int vq = V_size;
-        public Dictionary<int, List<int>> Neighbour = new Dictionary<int, List<int>>();
         public int[] Previous = new int[V_size+1];
         public List<int> Path = new List<int>();
 
@@ -28,15 +28,30 @@ namespace ConsoleApp1
         public double ni;
         public double T;                                            //total nuber of packages
         public double R;
+
         public double[] E_nergy = new double[V_size+1];
         public double[] T_ = new double[V_size+1];                    //traffic load
         public double[] Tao = new double[V_size+1];                   //tao = T_i/T
         public double[] Lambda = new double[V_size+1];                //if energy left is less than e_min
         public double[,] D = new double[V_size+1, V_size+1];            //distance
         public double[,] Delta = new double[V_size+1, V_size+1];        //is in transmision range 0/1 distance <R
+        public double[] p = new double[V_size + 1];
+        public Dictionary<int, List<int>> Neighbour = new Dictionary<int, List<int>>();
 
-        public Dictionary<int, Coordinates> Coordinates = new Dictionary<int, Coordinates>();
-
+        public void SetLambda()
+        {
+            for (int i = 1; i < V_size + 1; i++)
+            {
+                if (E_nergy[i] >= E_min)
+                {
+                    Lambda[i] = 1;
+                }
+                else
+                {
+                    Lambda[i] = 0;
+                }
+            }
+        }
         private void GenerateData()
         {
             E_min = 20.0;
@@ -74,18 +89,13 @@ namespace ConsoleApp1
 
         private void GenerateLocations()
         {
-            //var randomGenerator = new Random(0);
+            var randomGenerator = new Random(0);
             for (int i = 0; i < V_size + 1; i++)
             {
-                //var coordinates = new Coordinates()
-                //{
-                //    X = randomGenerator.Next(0, 50),
-                //    Y = randomGenerator.Next(0, 50)
-                //};
                 var coordinates = new Coordinates()
                 {
-                    X = (i % 6) * 10,
-                    Y = (i / 6) * 10
+                    X = randomGenerator.Next(0, 50),
+                    Y = randomGenerator.Next(0, 50)
                 };
                 Coordinates.Add(i, coordinates);
             }
@@ -199,20 +209,7 @@ namespace ConsoleApp1
             return (Beta / Q) * (D[v_i, v_j] / Delta[v_i, v_j]) * (E_max / (E_nergy[v_j] * Lambda[v_j])) * (1 + (Gamma * Tao[v_j]));
         }
 
-        private void SetLambda()
-        {
-            for (int i = 1; i < V_size + 1; i++)
-            {
-                if (E_nergy[i] >= E_min)
-                {
-                    Lambda[i] = 1;
-                }
-                else
-                {
-                    Lambda[i] = 0;
-                }
-            }
-        }
+        
         
         private int GetVj()
         {

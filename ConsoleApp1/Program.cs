@@ -10,8 +10,10 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            var routing = new Routing();
-            routing.FindPath();
+            //var routing = new Routing();
+            //routing.FindPath();
+            var loader = new ConfigLoader();
+            var param = loader.LoadAlgorithmParameters();
         }
     }
 }
