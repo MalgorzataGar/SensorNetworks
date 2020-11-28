@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace ConsoleApp1
+namespace SensorNetworks
 {
     public class Routing
     {
