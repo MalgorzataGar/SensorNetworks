@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace SensorNetworks
 {
-    public class Node
+    public class Coordinates
     {
-        public int From;
-        public int To;
+        public double X { get; set; }
+        public double Y { get; set; }
     }
 }
