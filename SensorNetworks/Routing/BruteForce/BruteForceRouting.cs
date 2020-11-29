@@ -16,6 +16,9 @@ namespace SensorNetworks.BruteForce
         private Dictionary<int, double> _pathIndexToCost = new Dictionary<int, double>();
         private List<List<int>> _paths = new List<List<int>>();
 
+        private int _startTime;
+        private int _endTime;
+
         public List<int> FindPath(AlgorithmParameters parameters)
         {
             _parameters = parameters;
