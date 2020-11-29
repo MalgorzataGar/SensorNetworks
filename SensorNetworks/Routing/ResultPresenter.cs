@@ -6,38 +6,26 @@ namespace SensorNetworks
 {
     public class ResultPresenter
     {
-        private List<int> _path;
-        private int[] _previous;
-
-        public ResultPresenter(List<int> path, int[] previous)
+        public static void PrintPath(List<int> path)
         {
-            _path = path;
-            _previous = previous;
-        }
-        
-        public void Present()
-        {
-            BuildPath();
-            PrintPath();
-        }
-        
-        private void BuildPath()
-        {
-            var vi = 0;
-            while (vi != -1)
+            var sb = new StringBuilder();
+            foreach (var node in path)
             {
-                _path.Add(vi);
-                vi = _previous[vi];
+                sb.Append($"{node}->");
             }
+
+            sb.Length = sb.Length - 2;
+            Console.WriteLine(sb.ToString());
         }
-        private void PrintPath()
+        
+        public static void PrintPath(int[] previous)
         {
             var vi = 0;
             var sb = new StringBuilder();
             while (vi != -1)
             {
                 sb.Append($"{vi}->");
-                vi = _previous[vi];
+                vi = previous[vi];
             }
             sb.Length = sb.Length - 2;
             Console.WriteLine($"{sb}\n");
