@@ -25,8 +25,13 @@ namespace SensorNetworks
             var bruteForceRouting = new BruteForceRouting();
             foreach (var param in parameters)
             {
-                routing.FindPath(param);
-                bruteForceRouting.FindPath(param);
+                var routingResult = routing.FindPath(param);
+                var bruteForceResult = bruteForceRouting.FindPath(param);
+                Console.WriteLine("Algorithm result: ");
+                ResultPresenter.PrintPath(routingResult);
+                Console.WriteLine("Brute Force result: ");
+                ResultPresenter.PrintPath(bruteForceResult);
+                Console.WriteLine("\n");
             }    
             Console.ReadKey();
         }

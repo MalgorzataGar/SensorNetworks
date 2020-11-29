@@ -19,24 +19,26 @@ namespace SensorNetworks.BruteForce
         public List<int> FindPath(AlgorithmParameters parameters)
         {
             _parameters = parameters;
-            Initialize();
-            if (v_q > 10)
+            if (_parameters.Instance.V_size > 10)
             {
                 return _result;
             }
-            GenerateAllPossiblePaths();
+            Initialize();
             ChooseBestPath();
-            Console.WriteLine("Brute force result: ");
-            ResultPresenter.PrintPath(_result);
             return _result;
         }
 
         private void Initialize()
         {
-            v_s = 0;
+            var oldV_q = v_q;
             v_q = _parameters.Instance.V_size;
+            if (oldV_q != v_q)
+            {
+                _paths = new List<List<int>>();
+                GenerateAllPossiblePaths();
+            }
+            v_s = 0;
             _result = new List<int>();
-            _paths = new List<List<int>>();
             _pathIndexToCost = new Dictionary<int, double>();
         }
 
@@ -90,7 +92,7 @@ namespace SensorNetworks.BruteForce
             double totalCost = 0;
             for (int i = 0; i < path.Count - 1; i++)
             {
-                totalCost += _calculator.Calculate(i, i + 1, _parameters);
+                totalCost += _calculator.Calculate(path[i], path[i + 1], _parameters);
             }
 
             return totalCost;

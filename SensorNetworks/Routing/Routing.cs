@@ -56,7 +56,7 @@ namespace SensorNetworks
                 }
             } while (!W.Contains(vs) && WHasNeighbour());
             
-            ResultPresenter.PrintPath(Previous);
+            
             return Path;
         }
 

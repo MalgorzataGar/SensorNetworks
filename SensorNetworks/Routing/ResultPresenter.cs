@@ -4,10 +4,14 @@ using System.Text;
 
 namespace SensorNetworks
 {
-    public class ResultPresenter
+    public static class ResultPresenter
     {
         public static void PrintPath(List<int> path)
         {
+            if (path == null)
+            {
+                return;
+            }
             var sb = new StringBuilder();
             foreach (var node in path)
             {
@@ -20,6 +24,10 @@ namespace SensorNetworks
         
         public static void PrintPath(int[] previous)
         {
+            if (previous == null)
+            {
+                return;
+            }
             var vi = 0;
             var sb = new StringBuilder();
             while (vi != -1)
@@ -29,6 +37,11 @@ namespace SensorNetworks
             }
             sb.Length = sb.Length - 2;
             Console.WriteLine($"{sb}\n");
+        }
+
+        public static void PrintTime(int start, int end)
+        {
+            //To Do 
         }
     }
 }
