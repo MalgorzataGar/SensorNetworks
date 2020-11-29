@@ -87,7 +87,10 @@ namespace SensorNetworks.BruteForce
                 _pathIndexToCost.Add(i, cost);
             }
             var resultIndex = _pathIndexToCost.OrderBy(x => x.Value).First();
-            _result = _paths[resultIndex.Key];
+            if (resultIndex.Value != Double.PositiveInfinity)
+            {
+                _result = _paths[resultIndex.Key];
+            }
         }
 
         private double CalculateCost(List<int> path)

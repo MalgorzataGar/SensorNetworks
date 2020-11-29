@@ -8,35 +8,41 @@ namespace SensorNetworks
     {
         public static void PrintPath(List<int> path)
         {
-            if (path == null)
+            if (path == null || path.Count <= 1)
             {
-                return;
+                Console.WriteLine("Cannot find solution");
             }
-            var sb = new StringBuilder();
-            foreach (var node in path)
+            else
             {
-                sb.Append($"{node}->");
+                var sb = new StringBuilder();
+                foreach (var node in path)
+                {
+                    sb.Append($"{node}->");
+                }
+                sb.Length = sb.Length - 2;
+                Console.WriteLine(sb.ToString());
             }
-
-            sb.Length = sb.Length - 2;
-            Console.WriteLine(sb.ToString());
         }
         
         public static void PrintPath(int[] previous)
         {
-            if (previous == null)
+            if (previous == null || previous.Length <= 1)
             {
-                return;
+                Console.WriteLine("Cannot find solution");
             }
-            var vi = 0;
-            var sb = new StringBuilder();
-            while (vi != -1)
+            else
             {
-                sb.Append($"{vi}->");
-                vi = previous[vi];
+                var vi = 0;
+                var sb = new StringBuilder();
+                while (vi != -1)
+                {
+                    sb.Append($"{vi}->");
+                    vi = previous[vi];
+                }
+
+                sb.Length = sb.Length - 2;
+                Console.WriteLine($"{sb}\n");
             }
-            sb.Length = sb.Length - 2;
-            Console.WriteLine($"{sb}\n");
         }
 
         public static void PrintTime(int start, int end)
