@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SensorNetworks.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,9 +16,10 @@ namespace SensorNetworks
         public double[] L;
         public double[] M;
         public int[] Previous;
-
+        public double[] G;  //zysk
         private int vs = 0;
         private int vq;
+        public Result result;
 
         public void FindPath(AlgorithmParameters parameters)
         {
@@ -37,6 +39,7 @@ namespace SensorNetworks
                 {
                     var c = _costCalculator.Calculate(v_i, v_j, _parameters);
                     var x = L[v_j] + c;
+                    G[v_j] = (M[v_j] - c) * parameters.Configuration.Q;
                     if (L[v_i] > x)
                     {
                         M[v_i] = M[v_j] * _parameters.p[v_i];
@@ -57,6 +60,8 @@ namespace SensorNetworks
 
             var presenter = new ResultPresenter(Path, Previous);
             presenter.Present();
+            var welfare = _costCalculator.CalculateWelfare(vs,vq,G,Path);
+            result = new Result { Path = Path, Welfare = welfare };
         }
 
         private void ClearAll()
@@ -71,18 +76,18 @@ namespace SensorNetworks
         {
             L = new double[_parameters.Instance.V_size + 1];
             M = new double[_parameters.Instance.V_size + 1];
+            G = new double[_parameters.Instance.V_size + 1];
             Previous = new int[_parameters.Instance.V_size + 1];
             vq = _parameters.Instance.V_size;
-            for (var vi = 0; vi < _parameters.Instance.V_size; vi++)
+            for (var vi = 0; vi < _parameters.Instance.V_size + 1; vi++)
             {
                 V.Add(vi);
                 L[vi] = Double.PositiveInfinity;
                 M[vi] = 1.0;
+                G[vi] = 0.0;
                 Previous[vi] = -1;
             }
             L[vq] = 0.0;
-            M[vq] = 1.0;
-            Previous[vq] = -1;
             V.Add(vq);
         }
 

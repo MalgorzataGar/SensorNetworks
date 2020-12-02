@@ -6,8 +6,8 @@ namespace SensorNetworks
 {
     public class ResultPresenter
     {
-        private List<int> _path;
-        private int[] _previous;
+        public List<int> _path;
+        private int[] _previous; 
 
         public ResultPresenter(List<int> path, int[] previous)
         {

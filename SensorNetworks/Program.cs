@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SensorNetworks.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,13 @@ namespace SensorNetworks
             var loader = new ConfigLoader();
             var parameters = loader.LoadAlgorithmParameters();
             var routing = new Routing();
+            var results = new List<Result>();
             foreach (var param in parameters)
             {
                 routing.FindPath(param);
-            }    
+                results.Add(routing.result);
+            }
+            Common.Common.SaveObject(results, "Results.json");
             Console.ReadKey();
         }
     }
