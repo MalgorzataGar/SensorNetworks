@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace SensorNetworks
 {
-    public class Node
+    public class Instance
     {
-        public int From;
-        public int To;
+        public int V_size;
+        public Dictionary<int, Coordinates> Coordinates;
     }
 }
