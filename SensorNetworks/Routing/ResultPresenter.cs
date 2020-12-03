@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SensorNetworks
 {
-    public class ResultPresenter
+    public static class ResultPresenter
     {
         public List<int> _path;
         private int[] _previous; 
@@ -14,33 +14,47 @@ namespace SensorNetworks
             _path = path;
             _previous = previous;
         }
-        
-        public void Present()
         {
-            BuildPath();
-            PrintPath();
-        }
-        
-        private void BuildPath()
-        {
-            var vi = 0;
-            while (vi != -1)
+            if (path == null || path.Count <= 1)
             {
-                _path.Add(vi);
-                vi = _previous[vi];
+                Console.WriteLine("Cannot find solution");
+            }
+            else
+            {
+                var sb = new StringBuilder();
+                foreach (var node in path)
+                {
+                    sb.Append($"{node}->");
+                }
+                sb.Length = sb.Length - 2;
+                Console.WriteLine(sb.ToString());
             }
         }
-        private void PrintPath()
+        
+        public static void PrintPath(int[] previous)
         {
-            var vi = 0;
-            var sb = new StringBuilder();
-            while (vi != -1)
+            if (previous == null || previous.Length <= 1)
             {
-                sb.Append($"{vi}->");
-                vi = _previous[vi];
+                Console.WriteLine("Cannot find solution");
             }
-            sb.Length = sb.Length - 2;
-            Console.WriteLine($"{sb}\n");
+            else
+            {
+                var vi = 0;
+                var sb = new StringBuilder();
+                while (vi != -1)
+                {
+                    sb.Append($"{vi}->");
+                    vi = previous[vi];
+                }
+
+                sb.Length = sb.Length - 2;
+                Console.WriteLine($"{sb}\n");
+            }
+        }
+
+        public static void PrintTime(int start, int end)
+        {
+            //To Do 
         }
     }
 }

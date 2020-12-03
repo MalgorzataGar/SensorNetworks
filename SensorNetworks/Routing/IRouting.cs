@@ -6,6 +6,6 @@ namespace SensorNetworks
 {
     public interface IRouting
     {
-        void FindPath(AlgorithmParameters parameters);
+        List<int> FindPath(AlgorithmParameters parameters);
     }
 }

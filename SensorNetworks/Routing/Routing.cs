@@ -1,6 +1,7 @@
 ﻿using SensorNetworks.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -12,16 +13,16 @@ namespace SensorNetworks
         private CostCalculator _costCalculator = new CostCalculator();
         public List<int> W = new List<int>();
         public List<int> V = new List<int>();
-        public List<int> Path = new List<int>();
         public double[] L;
         public double[] M;
         public int[] Previous;
         public double[] G;  //zysk
+        public List<int> Path = new List<int>();
         private int vs = 0;
         private int vq;
         public Result result;
 
-        public void FindPath(AlgorithmParameters parameters)
+        public List<int> FindPath(AlgorithmParameters parameters)
         {
             ClearAll();
             _parameters = parameters;
@@ -57,11 +58,12 @@ namespace SensorNetworks
                     }
                 }
             } while (!W.Contains(vs) && WHasNeighbour());
-
+            BuildPath();
             var presenter = new ResultPresenter(Path, Previous);
             presenter.Present();
             var welfare = _costCalculator.CalculateWelfare(vs,vq,G,Path);
-            result = new Result { Path = Path, Welfare = welfare };
+            result = new Result { Path = Path, Welfare = welfare }
+            return Path;
         }
 
         private void ClearAll()
@@ -127,6 +129,16 @@ namespace SensorNetworks
             }
 
             return -1;
+        }
+        private void BuildPath()
+        {
+            var vi = 0;
+            while (vi != -1)
+            {
+                Path.Add(vi);
+                vi = Previous[vi];
+            }
+            
         }
 
     }
