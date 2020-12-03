@@ -24,23 +24,19 @@ namespace SensorNetworks
             var parameters = loader.LoadAlgorithmParameters();
             var routing = new Routing();
             var results = new List<Result>();
-            foreach (var param in parameters)
-            {
-                routing.FindPath(param);
-                results.Add(routing.result);
-            }
-            Common.Common.SaveObject(results, "Results.json");
             var bruteForceRouting = new BruteForceRouting();
             foreach (var param in parameters)
             {
                 var routingResult = routing.FindPath(param);
+                results.Add(routing.result);
                 var bruteForceResult = bruteForceRouting.FindPath(param);
                 Console.WriteLine("Algorithm result: ");
                 ResultPresenter.PrintPath(routingResult);
                 Console.WriteLine("Brute Force result: ");
                 ResultPresenter.PrintPath(bruteForceResult);
                 Console.WriteLine("\n");
-            }    
+            }
+            Common.Common.SaveObject(results, "Results.json");
             Console.ReadKey();
         }
     }
