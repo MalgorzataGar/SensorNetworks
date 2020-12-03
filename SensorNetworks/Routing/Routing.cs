@@ -59,10 +59,9 @@ namespace SensorNetworks
                 }
             } while (!W.Contains(vs) && WHasNeighbour());
             BuildPath();
-            var presenter = new ResultPresenter(Path, Previous);
-            presenter.Present();
+            ResultPresenter.PrintPath(Previous);
             var welfare = _costCalculator.CalculateWelfare(vs,vq,G,Path);
-            result = new Result { Path = Path, Welfare = welfare }
+            result = new Result { Path = Path, Welfare = welfare };
             return Path;
         }
 
