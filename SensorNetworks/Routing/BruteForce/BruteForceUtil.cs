@@ -1,0 +1,64 @@
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SensorNetworks.BruteForce
+{
+    public static class BruteForceUtil
+    {
+        public static IEnumerable<IEnumerable<T>> Permute<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+            {
+                yield break;
+            }
+
+            var list = sequence.ToList();
+
+            if (!list.Any())
+            {
+                yield return Enumerable.Empty<T>();
+            }
+            else
+            {
+                var startingElementIndex = 0;
+
+                foreach (var startingElement in list)
+                {
+                    var index = startingElementIndex;
+                    var remainingItems = list.Where((e, i) => i != index);
+
+                    foreach (var permutationOfRemainder in remainingItems.Permute())
+                    {
+                        yield return startingElement.Concat(permutationOfRemainder);
+                    }
+
+                    startingElementIndex++;
+                }
+            }
+        }
+
+        private static IEnumerable<T> Concat<T>(this T firstElement, IEnumerable<T> secondSequence)
+        {
+            yield return firstElement;
+            if (secondSequence == null)
+            {
+                yield break;
+            }
+
+            foreach (var item in secondSequence)
+            {
+                yield return item;
+            }
+        }
+        
+        public static IEnumerable<IEnumerable<T>> Combinations<T>(this IEnumerable<T> source) {
+            T[] data = source.ToArray();
+
+            return Enumerable
+                .Range(0, 1 << (data.Length))
+                .Select(index => data
+                    .Where((v, i) => (index & (1 << i)) != 0)
+                    .ToList());
+        }
+    }
+}
