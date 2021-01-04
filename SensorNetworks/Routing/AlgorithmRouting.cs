@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace SensorNetworks
 {
-    public class Routing : IRouting
+    public class AlgorithmRouting : IRouting
     {
         private AlgorithmParameters _parameters;
         private CostCalculator _costCalculator = new CostCalculator();
