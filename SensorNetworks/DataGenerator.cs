@@ -5,7 +5,7 @@ using System.IO;
 
 namespace SensorNetworks
 {
-    public class TestDataGenerator
+    public class DataGenerator
     {
         private readonly Random _randomGenerator;
         private Dictionary<int, int> _nodesPerInstance;     // key - number of nodes/ value - number with instances with this amount of nodes
@@ -13,7 +13,7 @@ namespace SensorNetworks
         private int _areaSize;
         private const string _fileName = "Instances.json";
         private readonly string _path = Path.Combine(Environment.CurrentDirectory, _fileName);
-        public TestDataGenerator(Dictionary<int, int> nodesPerInstance, int areaSize)
+        public DataGenerator(Dictionary<int, int> nodesPerInstance, int areaSize)
         {
             _nodesPerInstance = nodesPerInstance;
             _instances = new List<Instance>();
@@ -31,6 +31,17 @@ namespace SensorNetworks
                 }
             }
             WriteToFile();
+        }
+        public List<Instance> GenerateDataAndReturn()
+        {
+            foreach (KeyValuePair<int, int> config in _nodesPerInstance)
+            {
+                for (int i = 0; i < config.Value; i++)
+                {
+                    _instances.Add(GetInstance(config.Key));
+                }
+            }
+            return _instances;
         }
         private Instance GetInstance(int size)
         {

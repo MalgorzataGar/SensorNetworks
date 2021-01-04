@@ -21,7 +21,7 @@ namespace SensorNetworks
             var instances = ReadInstancesFromFile();
             return instances.Select(x =>CreateParameters(configuration,x)).ToList();
         }
-        private AlgorithmParameters CreateParameters(Configuration configuration, Instance instance)
+        public AlgorithmParameters CreateParameters(Configuration configuration, Instance instance)
         {
             var parameters = new AlgorithmParameters(instance, configuration);
 
