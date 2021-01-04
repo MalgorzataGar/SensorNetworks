@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SensorNetworks.BruteForce;
+using SensorNetworks.Routing.BruteForceAlt;
 
 namespace SensorNetworks
 {
@@ -22,13 +23,14 @@ namespace SensorNetworks
             generator.GenerateData();
             var loader = new ConfigLoader();
             var parameters = loader.LoadAlgorithmParameters();
-            var routing = new Routing();
+            var routing = new AlgorithmRouting();
             var results = new List<Result>();
-            var bruteForceRouting = new BruteForceRouting();
+            var bruteForceRouting = new BruteForceRoutingAlt();
             foreach (var param in parameters)
             {
                 var routingResult = routing.FindPath(param);
                 results.Add(routing.result);
+                bruteForceRouting.size_limit = false;
                 var bruteForceResult = bruteForceRouting.FindPath(param);
                 Console.WriteLine("Algorithm result: ");
                 ResultPresenter.PrintPath(routingResult);

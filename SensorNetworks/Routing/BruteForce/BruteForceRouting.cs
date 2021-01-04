@@ -22,7 +22,7 @@ namespace SensorNetworks.BruteForce
         public List<int> FindPath(AlgorithmParameters parameters)
         {
             _parameters = parameters;
-            if (_parameters.Instance.V_size > 10)
+            if (_parameters.Instance.V_size > 20)
             {
                 return _result;
             }
