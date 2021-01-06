@@ -103,5 +103,15 @@ namespace SensorNetworks.BruteForce
 
             return totalCost;
         }
+
+        public double GetUtility(List<int> path, AlgorithmParameters parameters)
+        {
+            double totalCost = 0;
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                totalCost += _calculator.Calculate(path[i], path[i + 1], parameters);
+            }
+            return totalCost;
+        }
     }
 }

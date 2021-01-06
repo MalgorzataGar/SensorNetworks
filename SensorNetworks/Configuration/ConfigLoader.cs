@@ -29,7 +29,7 @@ namespace SensorNetworks
             {
                 parameters.p[i] = (_randomGenerator.NextDouble() / 2) + 0.5;
                 parameters.E_nergy[i] = configuration.E_max;
-                parameters.Tao[i] = _randomGenerator.NextDouble();
+                parameters.Tao[i] = 0;
                 SetDisctance(ref parameters, i, instance);
                 SetNeighbours(ref parameters, i);
             }

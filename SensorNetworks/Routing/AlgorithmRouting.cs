@@ -140,5 +140,21 @@ namespace SensorNetworks
             
         }
 
+        public double GetUtility(List<int> path, AlgorithmParameters parameters)
+        {
+            var utility = 0.0;
+            var probability = 1.0;
+            for (int i = 1; i < path.Count; i++)
+            {
+                probability *= _parameters.p[path[i]];
+            }
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                var node = path[i];
+                var next_node = path[i + 1];
+                utility += probability - _costCalculator.Calculate(node, next_node, _parameters) / _parameters.p[next_node];
+            }
+            return utility;
+        }
     }
 }

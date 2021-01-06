@@ -17,31 +17,58 @@ namespace SensorNetworks.Tests
     {
         public void CompareTools()
         {
-            var parametersRouting = ReadParametersFromFile().FirstOrDefault();
-            var parametersBrute = ReadParametersFromFile().FirstOrDefault();
+            var parameters = ReadParametersFromFile();
             var routing = new AlgorithmRouting();
             var bruteForceRouting = new BruteForceRoutingAlt();
-            var algorithmSuccess = new List<bool>();
-            var bruteForceSuccess = new List<bool>();
-            do
+            int i = 0;
+            foreach(var param in parameters)
             {
-                FindPathAndUpdate(parametersRouting,algorithmSuccess,routing);
-                FindPathAndUpdate(parametersBrute, bruteForceSuccess, bruteForceRouting);
+                i++;
+                var parametersRouting = param;
+                var parametersBrute = param;
+                var algorithmSuccess = new List<bool>();
+                var bruteForceSuccess = new List<bool>();
+                var algorithmAliveNodes = new List<int>();
+                var bruteForceAliveNodes = new List<int>();
+                do
+                {
+                    FindPathAndUpdate(parametersRouting, algorithmSuccess, routing, algorithmAliveNodes);
+                    FindPathAndUpdate(parametersBrute, bruteForceSuccess, bruteForceRouting, bruteForceAliveNodes);
 
-            } while (algorithmSuccess.LastOrDefault() != false && bruteForceSuccess.LastOrDefault() != false);
-            SaveToCSV(algorithmSuccess, bruteForceSuccess);
-           Console.ReadKey();
+                } while (algorithmSuccess.LastOrDefault() != false && bruteForceSuccess.LastOrDefault() != false);
+                SaveToCSV(algorithmSuccess, bruteForceSuccess, parametersRouting, parametersBrute, algorithmAliveNodes, bruteForceAliveNodes,i);
+            }
+           
         }
 
-        private void FindPathAndUpdate(AlgorithmParameters parameters, List<bool> successList, IRouting routing)
+        private void FindPathAndUpdate(AlgorithmParameters parameters, List<bool> successList, IRouting routing, List<int> aliveNodes)
         {
             var routingResult = routing.FindPath(parameters);
             if (routingResult != null)
             {
                 successList.Add(routingResult.Count > 1);
                 UpdateEnergy(routingResult, parameters);
+                CalculateAliveNodes(aliveNodes, parameters);
             }
-            else successList.Add(false);
+            else
+            {
+                successList.Add(false);
+                aliveNodes.Add(0);
+            }
+            
+        }
+
+        private void CalculateAliveNodes(List<int> aliveNodes, AlgorithmParameters parameters)
+        {
+            int count = 0;
+            foreach (var energyLevel in parameters.E_nergy)
+            {
+                if (energyLevel > parameters.Configuration.E_min)
+                {
+                    count++;
+                }
+            }
+            aliveNodes.Add(count);
         }
 
         private void UpdateEnergy(List<int> result, AlgorithmParameters parameters)
@@ -63,24 +90,61 @@ namespace SensorNetworks.Tests
                 return JsonConvert.DeserializeObject<List<AlgorithmParameters>>(json);
             }
         }
-        private void SaveToCSV(List<bool> algorithmSuccess, List<bool> bruteForceSuccess)
+        private void SaveToCSV(List<bool> algorithmSuccess, List<bool> bruteForceSuccess, AlgorithmParameters parametersRouting, AlgorithmParameters parametersBrute, List<int> algorithmAliveNodes, List<int> bruteForceAliveNodes, int instanceNumber)
         {
             var records = new List<dynamic>();
-
-            for (int i = 0; i < algorithmSuccess.Count; i++)
+            dynamic record = new ExpandoObject();
+                record.InstanceNumber = instanceNumber;
+                record.IterationCount = algorithmSuccess.Count();
+                record.InstanceSize = parametersRouting.Instance.V_size;
+                record.AlgorithmSuccess = GetSuccessCount(algorithmSuccess);
+                record.BruteSuccess = GetSuccessCount(bruteForceSuccess);
+                record.AlgoritmAliveNodes = GetAliveNodes(algorithmAliveNodes, algorithmSuccess);
+                record.BruteAliveNodes = GetAliveNodes(bruteForceAliveNodes, bruteForceSuccess);
+            records.Add(record);
+            
+            if (instanceNumber == 1)
             {
-                dynamic record = new ExpandoObject();
-                record.AlgorithmSuccess = algorithmSuccess[i];
-                record.BruteSuccess = bruteForceSuccess[i];
-                records.Add(record);
-            }
+                using (TextWriter writer = new StreamWriter("LifeTimeTest.csv", false, System.Text.Encoding.UTF8))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(records);
 
-            using (TextWriter writer = new StreamWriter("LifeTimeTest.csv", false, System.Text.Encoding.UTF8))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                }
+            }
+            else
             {
-                csv.WriteRecords(records);
-
+                using (var stream = File.Open("LifeTimeTest.csv", FileMode.Append))
+                using (var writer = new StreamWriter(stream))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.Configuration.HasHeaderRecord = false;
+                    csv.WriteRecords(records);
+                }
             }
+        }
+
+        private int GetAliveNodes(List<int> algorithmAliveNodes,List<bool>success )
+        {
+            if (success.FirstOrDefault() == false)
+            {
+                return 0;
+            }
+            else if (success.LastOrDefault() == true)
+            {
+                return algorithmAliveNodes.LastOrDefault();
+            }
+            else 
+            {
+                
+                return algorithmAliveNodes[success.Count() - 2];
+            }
+                
+        }
+
+        private int GetSuccessCount(List<bool> algorithmSuccess)
+        {
+            return algorithmSuccess.Where(x => x == true).Count();
         }
     }
 }

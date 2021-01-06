@@ -23,7 +23,7 @@ namespace SensorNetworks.Routing.BruteForceAlt
         private int current_strike = 0;
         public List<int> FindPath(AlgorithmParameters parameters)
         {
-            if (parameters.Instance.V_size >= 40 && size_limit)
+            if (parameters.Instance.V_size >= 30 && size_limit)
             {
                 Console.WriteLine("Instance is too big to brute force");
                 return null;
@@ -47,7 +47,7 @@ namespace SensorNetworks.Routing.BruteForceAlt
         {
             var max_index = -1;
             var max_val = Double.MinValue;
-            for(int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 if (max_val < list[i])
                 {
@@ -81,7 +81,7 @@ namespace SensorNetworks.Routing.BruteForceAlt
             var neighbours = from border in _parameters.E.FindAll(item => item.From == last_node) select border.To;
             foreach (var neighbour in neighbours)
             {
-                if (!currentPath.Contains(neighbour) && _parameters.D[neighbour,vq] < _parameters.D[last_node,vq])
+                if (!currentPath.Contains(neighbour) && _parameters.D[neighbour, vq] < _parameters.D[last_node, vq])
                 {
                     var new_path = currentPath.ToList();
                     new_path.Add(neighbour);
@@ -95,21 +95,21 @@ namespace SensorNetworks.Routing.BruteForceAlt
         private List<double> PricePaths(List<List<int>> paths)
         {
             var utilities = new List<double>();
-            foreach(var path in paths)
+            foreach (var path in paths)
             {
                 var utility = 0.0;
                 var probability = 1.0;
-                for(int i=1; i < path.Count; i++)
+                for (int i = 1; i < path.Count; i++)
                 {
                     probability *= _parameters.p[path[i]];
                 }
-                for(int i=0; i<path.Count-1;i++)
+                for (int i = 0; i < path.Count - 1; i++)
                 {
                     var node = path[i];
                     var next_node = path[i + 1];
                     utility += probability - _costCalculator.Calculate(node, next_node, _parameters) / _parameters.p[next_node];
                 }
-                utilities.Add(utility/path.Count);
+                utilities.Add(utility / path.Count);
             }
             return utilities;
         }
@@ -121,6 +121,21 @@ namespace SensorNetworks.Routing.BruteForceAlt
             FindNextNeighbour(paths, origin_path);
             return paths;
         }
-        
+        public double GetUtility(List<int> path, AlgorithmParameters parameters)
+        {
+            var utility = 0.0;
+            var probability = 1.0;
+            for (int i = 1; i < path.Count; i++)
+            {
+                probability *= _parameters.p[path[i]];
+            }
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                var node = path[i];
+                var next_node = path[i + 1];
+                utility += probability - _costCalculator.Calculate(node, next_node, _parameters) / _parameters.p[next_node];
+            }
+            return utility;
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace SensorNetworks.Tests
     public class ComparisonData
     {
         private Random _randomGenerator;
-        private string _fileName = "timeComparisonData";
+        private string _fileName = "trafficLoadComparisonData.json";
         public ComparisonData()
         {
             _randomGenerator = new Random();
@@ -20,9 +20,16 @@ namespace SensorNetworks.Tests
         public List<Instance> GenerateData()
         {
             var dict = new Dictionary<int, int>();
-            dict.Add(5, 10);
+            /*dict.Add(5, 10);
             dict.Add(7, 10);
-            dict.Add(10, 1);
+            dict.Add(9, 10);
+            dict.Add(12, 10);
+            dict.Add(15, 10);
+            dict.Add(17, 10);
+            dict.Add(20, 10);
+            dict.Add(30, 10);
+            dict.Add(40, 10);*/
+            dict.Add(12, 90);
             var generator = new DataGenerator(dict, 50);
             return generator.GenerateDataAndReturn();
         }
