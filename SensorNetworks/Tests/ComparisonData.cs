@@ -10,6 +10,7 @@ namespace SensorNetworks.Tests
     public class ComparisonData
     {
         private Random _randomGenerator;
+        private string _fileName = "timeComparisonData";
         public ComparisonData()
         {
             _randomGenerator = new Random();
@@ -19,6 +20,8 @@ namespace SensorNetworks.Tests
         public List<Instance> GenerateData()
         {
             var dict = new Dictionary<int, int>();
+            dict.Add(5, 10);
+            dict.Add(7, 10);
             dict.Add(10, 1);
             var generator = new DataGenerator(dict, 50);
             return generator.GenerateDataAndReturn();
@@ -39,7 +42,7 @@ namespace SensorNetworks.Tests
         {
             return new Configuration
             {
-                E_max = 2000,
+                E_max = _randomGenerator.Next(1000, 2000),
                 E_min = _randomGenerator.Next(20, 40),
                 T = _randomGenerator.Next(5, 40),
                 R = _randomGenerator.Next(20, 50),
@@ -52,7 +55,7 @@ namespace SensorNetworks.Tests
         private void WriteToFile(List<AlgorithmParameters> data)
         {
             string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-            using (StreamWriter file = File.CreateText("lifetimeComparisonData.json"))
+            using (StreamWriter file = File.CreateText(_fileName))
             {
                 file.Write(json);
             }

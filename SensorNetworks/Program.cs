@@ -14,7 +14,7 @@ namespace SensorNetworks
     {
         static void Main(string[] args)
         {
-            var data = new ComparisonData();
+            //var data = new ComparisonData();
             var comparison = new NetworkLifetimeComparison();
             comparison.CompareTools();
             Console.ReadKey();

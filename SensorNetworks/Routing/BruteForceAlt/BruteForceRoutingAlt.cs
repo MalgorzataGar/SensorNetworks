@@ -7,7 +7,7 @@ using System.Text;
 namespace SensorNetworks.Routing.BruteForceAlt
 {
 
-    class BruteForceRoutingAlt : IRouting
+    public class BruteForceRoutingAlt : IRouting
     {
         private AlgorithmParameters _parameters;
         private CostCalculator _costCalculator = new CostCalculator();
