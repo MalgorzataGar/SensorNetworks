@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SensorNetworks.BruteForce;
 using SensorNetworks.Routing.BruteForceAlt;
+using SensorNetworks.Experiments;
 
 namespace SensorNetworks
 {
@@ -26,19 +27,22 @@ namespace SensorNetworks
             var routing = new AlgorithmRouting();
             var results = new List<Result>();
             var bruteForceRouting = new BruteForceRoutingAlt();
-            foreach (var param in parameters)
-            {
-                var routingResult = routing.FindPath(param);
-                results.Add(routing.result);
-                bruteForceRouting.size_limit = false;
-                var bruteForceResult = bruteForceRouting.FindPath(param);
-                Console.WriteLine("Algorithm result: ");
-                ResultPresenter.PrintPath(routingResult);
-                Console.WriteLine("Brute Force result: ");
-                ResultPresenter.PrintPath(bruteForceResult);
-                Console.WriteLine("\n");
-            }
-            Common.Common.SaveObject(results, "Results.json");
+            bruteForceRouting.size_limit = false;
+            //foreach (var param in parameters)
+            //{
+            //    var routingResult = routing.FindPath(param);
+            //    results.Add(routing.result);
+            //    bruteForceRouting.size_limit = false;
+            //    var bruteForceResult = bruteForceRouting.FindPath(param);
+            //    Console.WriteLine("Algorithm result: ");
+            //    ResultPresenter.PrintPath(routingResult);
+            //    Console.WriteLine("Brute Force result: ");
+            //    ResultPresenter.PrintPath(bruteForceResult);
+            //    Console.WriteLine("\n");
+            //}
+            //Common.Common.SaveObject(results, "Results.json");
+            var reliability_exp = new Reliability(parameters, routing, bruteForceRouting);
+            reliability_exp.Start();
             Console.ReadKey();
         }
     }
