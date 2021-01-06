@@ -23,7 +23,7 @@ namespace SensorNetworks.Routing.BruteForceAlt
         private int current_strike = 0;
         public List<int> FindPath(AlgorithmParameters parameters)
         {
-            if (parameters.Instance.V_size >= 30 && size_limit)
+            if (parameters.Instance.V_size >= 40 && size_limit)
             {
                 Console.WriteLine("Instance is too big to brute force");
                 return null;
