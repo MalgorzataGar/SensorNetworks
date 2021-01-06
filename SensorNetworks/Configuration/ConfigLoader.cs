@@ -13,7 +13,7 @@ namespace SensorNetworks
         private Random _randomGenerator;
         public ConfigLoader()
         {
-            _randomGenerator = new Random();
+            _randomGenerator = new Random(0);
         }
         public List<AlgorithmParameters> LoadAlgorithmParameters()
         {
